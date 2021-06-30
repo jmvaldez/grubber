@@ -1,10 +1,14 @@
-import { findDOMNode } from "react-dom";
-import { ViewBase, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet } from "react-native";
 
 export default function ImageSwiper({ data }) {
+  const [foodData, setFoodData] = useState([]);
+  console.log(data);
   return (
     <View>
-      <Image source={{ uri: data.image }} style={styles.image} />
+      {data.map((value, key) => {
+        return <Image source={{ uri: value.image }} style={styles.image} />;
+      })}
     </View>
   );
 }
