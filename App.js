@@ -5,10 +5,10 @@ import LoadingScreen from "./screens/LoadingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MainScreen from "./screens/MainScreen";
 
-import * as firebase from "firebase";
+import firebase from "firebase/app";
 import { firebaseConfig } from "./config";
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 export default function App() {
   return <AppNavigator />;
