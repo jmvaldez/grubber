@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Pressable, Image } from "react-native";
 import * as Google from "expo-google-app-auth";
 import firebase from "firebase";
 class LoginScreen extends Component {
@@ -103,10 +103,16 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button
-          title="Sign in with Google"
-          onPress={() => this.signInWithGoogleAsync()}
+        <Image
+          style={styles.image}
+          source={require("../assets/login_logo.png")}
         />
+        <Pressable
+          style={styles.button}
+          onPress={() => this.signInWithGoogleAsync()}
+        >
+          <Text styles={styles.text}>Sign in with Google</Text>
+        </Pressable>
       </View>
     );
   }
@@ -118,5 +124,26 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#f87157",
+  },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 50,
+    elevation: 3,
+    backgroundColor: "white",
+  },
+  text: {
+    fontSize: 24,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 250,
   },
 });
