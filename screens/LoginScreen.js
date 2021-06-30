@@ -36,7 +36,7 @@ class LoginScreen extends Component {
           // Sign in with credential from the Google user.
           firebase
             .auth()
-            .signInAndRetrieveDataWithCredential(credential)
+            .signInWithCredential(credential)
             .then(function (result) {
               console.log("user signed in ");
               if (result.additionalUserInfo.isNewUser) {
@@ -82,7 +82,6 @@ class LoginScreen extends Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        behavior: "web",
         androidClientId:
           "947103173540-ne2emgd1e6nov0ih7nu4bd3cmonq04pg.apps.googleusercontent.com",
         iosClientId:
