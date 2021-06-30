@@ -1,10 +1,25 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import firebase from "firebase";
 
 /**
  * Shown to the user when checking if user is logged in to Firebase or not
  */
 class LoadingScreen extends Component {
+
+    componentDidMount(){
+        this.checkIfLoggedIn()
+    }
+    checkIfLoggedIn = () => {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                this.props.navigation.navigate("MainScreen")
+            } else {
+                this.props.navigation.navigate("LoginScreen")
+            }
+        }).bind(this)
+    }
+
   render() {
     return (
       <View style={styles.container}>
