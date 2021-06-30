@@ -1,0 +1,21 @@
+[
+    {
+        "id": 1,
+        "foodName": "Pizza",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "image": "https://cdn.vox-cdn.com/thumbor/2ZNkrzz7K682znf88m5hWsRqXls=/13x219:1563x1563/1200x800/filters:focal(657x657:907x907)/cdn.vox-cdn.com/uploads/chorus_image/image/61963815/slice_square.0.jpg"
+    },
+    {
+        "id": 2,
+        "foodName": "Tacos",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "image": "https://wallpapercave.com/wp/wp3645676.jpg"
+    },
+    {
+        "id": 1,
+        "foodName": "Chinese",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "image": "https://graetnew.com/wp-content/uploads/2017/12/chinese.jpg"
+    }
+
+]
