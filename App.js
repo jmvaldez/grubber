@@ -1,24 +1,32 @@
 import React from "react";
-import { Button, StatusBar, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import LoadingScreen from "./screens/LoadingScreen";
+import LoginScreen from "./screens/LoginScreen";
+import MainScreen from "./screens/MainScreen";
 
-import HomeNavigator from "./components/stackNavigator/HomeNavigator";
-import ProfileNavigator from "./components/stackNavigator/ProfileNavigator"; //later for when i figure out the structure
+import firebase from "firebase/app";
+import { firebaseConfig } from "./config";
 
-/* Vendor */
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-
-/* Custom CSS */
-
-const AppTab = createBottomTabNavigator();
+firebase.initializeApp(firebaseConfig);
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <AppTab.Navigator initialRouteName="Home">
-        <AppTab.Screen component={HomeNavigator} name="Home" />
-        <AppTab.Screen component={ProfileNavigator} name="Profile" />
-      </AppTab.Navigator>
-    </NavigationContainer>
-  );
+  return <AppNavigator />;
 }
+
+const AppSwitchNavigator = createSwitchNavigator({
+  LoadingScreen: LoadingScreen,
+  LoginScreen: LoginScreen,
+  MainScreen: MainScreen,
+});
+
+const AppNavigator = createAppContainer(AppSwitchNavigator);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
