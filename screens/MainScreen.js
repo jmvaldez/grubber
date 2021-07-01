@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
 import firebase from "firebase";
-import FoodData from "../Data.json";
-
-import ImageSwiper from "../components/ImageSwiper";
 
 import HomeNavigator from "../components/StackNavigation/HomeNavigator";
 import ProfileNavigator from "../components/StackNavigation/ProfileNavigator"; //later for when i figure out the structure
