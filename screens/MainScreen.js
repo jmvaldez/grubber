@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-
-import firebase from "firebase";
-
+import { StyleSheet } from "react-native";
 import HomeNavigator from "../components/StackNavigation/HomeNavigator";
 import ProfileNavigator from "../components/StackNavigation/ProfileNavigator"; //later for when i figure out the structure
-
+import FavoritesNavigator from "../components/StackNavigation/FavoritesNavigator";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-
+import { Ionicons } from "@expo/vector-icons";
 /**
  * Main app screen.
  */
@@ -25,9 +22,39 @@ class MainScreen extends Component {
           <Button title="logout" onPress={() => firebase.auth().signOut()} />
         </View> */}
         <NavigationContainer>
-          <AppTab.Navigator initialRouteName="Home">
-            <AppTab.Screen component={HomeNavigator} name="Home" />
-            <AppTab.Screen component={ProfileNavigator} name="Profile" />
+          <AppTab.Navigator
+            initialRouteName="Home"
+            tabBarOptions={{
+              activeTintColor: "#F87157",
+            }}
+          >
+            <AppTab.Screen
+              component={HomeNavigator}
+              name="Home"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="ios-home" color={color} size={size} />
+                ),
+              }}
+            />
+            <AppTab.Screen
+              component={FavoritesNavigator}
+              name="Favorites"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="fast-food" size={size} color={color} />
+                ),
+              }}
+            />
+            <AppTab.Screen
+              component={ProfileNavigator}
+              name="Profile"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="ios-person" size={size} color={color} />
+                ),
+              }}
+            />
           </AppTab.Navigator>
         </NavigationContainer>
       </>
