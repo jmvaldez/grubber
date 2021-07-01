@@ -1,4 +1,4 @@
-const container = {
+const formatStyle = {
   center: {
     alignItems: "center",
     display: "flex",
@@ -35,4 +35,4 @@ const container = {
   flex2: { flex: 2 },
   flex3: { flex: 3 }
 };
-export default container;
+export default formatStyle;
