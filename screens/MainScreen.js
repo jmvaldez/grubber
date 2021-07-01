@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-
-import firebase from "firebase";
-
+import { StyleSheet } from "react-native";
 import HomeNavigator from "../components/StackNavigation/HomeNavigator";
 import ProfileNavigator from "../components/StackNavigation/ProfileNavigator"; //later for when i figure out the structure
-
+import FavoritesNavigator from "../components/StackNavigation/FavoritesNavigator";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -27,6 +24,7 @@ class MainScreen extends Component {
         <NavigationContainer>
           <AppTab.Navigator initialRouteName="Home">
             <AppTab.Screen component={HomeNavigator} name="Home" />
+            <AppTab.Screen component={FavoritesNavigator} name="Favorites" />
             <AppTab.Screen component={ProfileNavigator} name="Profile" />
           </AppTab.Navigator>
         </NavigationContainer>
