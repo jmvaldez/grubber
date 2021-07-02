@@ -17,9 +17,8 @@ class ProfileScreen extends React.Component {
     super(props);
     this.state = {
       selectedDiet: [],
-      userDiet: true,
       userDetails: [],
-      tester: false,
+      userDiet: true,
     };
   }
 
@@ -62,9 +61,6 @@ class ProfileScreen extends React.Component {
         last_name: lastName,
         created_at: Date.now(),
         diet: this.state.selectedDiet,
-      })
-      .then(function (snapshot) {
-        console.log("Snapshot", snapshot);
       });
     this.setState({ userDiet: true });
   };
