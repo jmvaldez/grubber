@@ -1,44 +1,85 @@
 import React, { Component, Fragment, useState } from "react";
 import { Button, Image, Text, View } from "react-native";
+
+/* Vendor */
+import SearchableDropdown from "react-native-searchable-dropdown";
+import firebase from "firebase/app";
+
+/* Custom CSS */
 import imageStyler from "../../assets/css/image.js";
 import formatStyler from "../../assets/css/format.js";
 
+/* DataSet */
 import diet from "../../health_labels.json";
-import SearchableDropdown from "react-native-searchable-dropdown";
 
 class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItems: [],
+      selectedDiet: [],
       userDiet: true,
+      userDetails: [],
+      tester: false,
     };
   }
 
   componentDidMount() {
     //check for user diet in the database
-    this.setState({
-      selectedItems: [
-        {
-          id: 5,
-          name: "dairy-free",
-          definition: "No dairy; no lactose",
-        },
-      ],
-    });
+    this.getData();
   }
 
-  renderDiet() {
-    return this.state.selectedItems.map((item, index) => (
+  getData = () => {
+    var currentUser = firebase.auth().currentUser;
+    this.setState({ userDetails: currentUser });
+    firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .once("value")
+      .then((snapshot) => {
+        snapshot.child("diet").exists();
+        this.setState({ selectedDiet: snapshot.val() });
+        if (typeof this.state.selectedDiet.diet !== "undefined") {
+          this.setState({ selectedDiet: this.state.selectedDiet.diet });
+        } else {
+          this.setState({ selectedDiet: [] });
+        }
+      });
+  };
+
+  setDiet = () => {
+    //Redux would be great right about now
+    var currentUser = firebase.auth().currentUser;
+    var firstName = currentUser.displayName.split(" ")[0];
+    var lastName = currentUser.displayName.split(" ")[1];
+
+    firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .set({
+        gmail: currentUser.email,
+        profile_picture: currentUser.photoURL,
+        first_name: firstName,
+        last_name: lastName,
+        created_at: Date.now(),
+        diet: this.state.selectedDiet,
+      })
+      .then(function (snapshot) {
+        console.log("Snapshot", snapshot);
+      });
+    this.setState({ userDiet: true });
+  };
+
+  renderDiet = () => {
+    return this.state.selectedDiet.map((item, index) => (
       <Text key={index}>{item.name}</Text>
     ));
-  }
+  };
+
+  changeDiet = () => {
+    this.setState({ userDiet: false });
+  };
 
   render() {
-    const actions = {
-      changeDiet: (value) => () => this.setState({ userDiet: value }),
-    };
-
     return (
       <View>
         {this.state.userDiet ? (
@@ -46,39 +87,36 @@ class ProfileScreen extends React.Component {
             <Image
               style={imageStyler.smallImage}
               source={{
-                uri: "http://www.research.uci.edu/zotmail/staff-assembly/placeholder.jpg",
+                uri: this.state.userDetails.photoURL,
               }}
             />
-            <Text>Placeholder Joe</Text>
-            <Text>placedholder@amazon.com</Text>
-            <Text>Pierre's Dietary Restrictions</Text>
-            {this.state.selectedItems.length ? (
+            <Text>{this.state.userDetails.displayName}</Text>
+            <Text>{this.state.userDetails.email + "\n"}</Text>
+            <Text> Dietary Restrictions {"\n"}</Text>
+            {this.state.selectedDiet.length ? (
               this.renderDiet()
             ) : (
-              <Text>None</Text>
+              <Text style={{ fontStyle: "italic" }}>None</Text>
             )}
-            <Button
-              onPress={actions.changeDiet(false)}
-              title="Edit Diet"
-            ></Button>
+            <Button onPress={this.changeDiet} title="Edit Diet"></Button>
           </View>
         ) : (
           <View style={formatStyler.card}>
-            <Button onPress={actions.changeDiet(true)} title="Save Diet" />
+            <Button onPress={this.setDiet} title="Save Diet" />
             <SearchableDropdown
               multi={true}
-              selectedItems={this.state.selectedItems}
+              selectedItems={this.state.selectedDiet}
               onItemSelect={(item) => {
-                const items = this.state.selectedItems;
+                const items = this.state.selectedDiet;
                 items.push(item);
-                this.setState({ selectedItems: items });
+                this.setState({ selectedDiet: items });
               }}
               containerStyle={{ padding: 5 }}
               onRemoveItem={(item, index) => {
-                const items = this.state.selectedItems.filter(
+                const items = this.state.selectedDiet.filter(
                   (sitem) => sitem.id !== item.id,
                 );
-                this.setState({ selectedItems: items });
+                this.setState({ selectedDiet: items });
               }}
               itemStyle={{
                 padding: 10,
@@ -95,7 +133,7 @@ class ProfileScreen extends React.Component {
               chip={true}
               resetValue={false}
               textInputProps={{
-                placeholder: "placeholder",
+                placeholder: "Type your diet",
                 underlineColorAndroid: "transparent",
                 style: {
                   padding: 12,
