@@ -1,10 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
+import firebase from "firebase/app";
 
 import FoodData from "../../data.json";
 
 export default function ImageSwiper() {
+  const [favorites, setFavorites] = useState([]);
+  var currentUser;
+
+  async function addToFavorites(item) {
+    // get user
+    currentUser = firebase.auth().currentUser;
+    // get unique key
+    var databaseRef = await firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .child("favorites")
+      .push();
+    databaseRef.set({
+      foodName: item.foodName,
+      description: item.description,
+      image: item.image,
+    });
+  }
+
+  async function getFavorites() {
+    currentUser = firebase.auth().currentUser;
+
+    var databaseRef = await firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .child("favorites")
+      .get();
+    setFavorites(databaseRef);
+  }
+
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Swiper
@@ -18,11 +53,13 @@ export default function ImageSwiper() {
           );
         }}
         infinite={true}
-        onSwiped={(cardIndex) => {
-          console.log(cardIndex);
+        onSwipedLeft={(cardIndex) => {
+          console.log("Swiped Left", cardIndex);
+          console.log("FOOD RESULT", FoodData[cardIndex]);
         }}
-        onSwipedAll={() => {
-          console.log("onSwipedAll");
+        onSwipedRight={(cardIndex) => {
+          console.log("favorites", favorites);
+          addToFavorites(FoodData[cardIndex]);
         }}
         cardIndex={0}
         backgroundColor={"#4FD0E9"}
