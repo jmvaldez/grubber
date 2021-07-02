@@ -1,16 +1,16 @@
-import React, { Component, Fragment, useState } from "react";
-import { Button, Image, Text, View, Pressable } from "react-native";
+import React  from "react";
+import {  Text, View, } from "react-native";
+import { Button, Card, Image } from "react-native-elements";
 
 /* Vendor */
 import SearchableDropdown from "react-native-searchable-dropdown";
 import firebase from "firebase/app";
+import { Ionicons } from "@expo/vector-icons";
 
 /* Custom CSS */
 import imageStyler from "../../assets/css/image.js";
 import formatStyler from "../../assets/css/format.js";
 import cardStyler from "../../assets/css/card.js";
-import buttonStyler from "../../assets/css/buttons.js";
-import colorStyler from "../../assets/css/colors.js";
 
 /* DataSet */
 import diet from "../../health_labels.json";
@@ -72,7 +72,7 @@ class ProfileScreen extends React.Component {
     return (
       <View style={cardStyler.dietCard}>
         {this.state.selectedDiet.map((item, index) => (
-          <Text style={{ fontStyle: "italic", color: "white" }} key={index}>
+          <Text style={cardStyler.dietText} key={index}>
             {item.name}
           </Text>
         ))}
@@ -101,30 +101,28 @@ class ProfileScreen extends React.Component {
             <Text style={{ fontSize: 13 }}>
               {this.state.userDetails.email + "\n"}
             </Text>
-            <View style={cardStyler.dietTitle}>
-              <Text style={{ fontSize: 20 }}>Dietary Restrictions</Text>
-            </View>
-            {this.state.selectedDiet.length ? (
-              this.renderDiet()
-            ) : (
-              <View style={cardStyler.dietCard}>
-                <Text style={{ fontStyle: "italic" }}>None</Text>
-              </View>
-            )}
-            <View>
-              <Pressable
-                style={({ pressed }) => [
-                  {
-                    backgroundColor: pressed ? "#0155AD" : "#43A0F4",
-                  },
-                  buttonStyler.dietButton,
-                ]}
+
+            <Card>
+              <Card.Title style={cardStyler.dietTitle}>
+                Diet Restrictions
+              </Card.Title>
+              <Card.Divider />
+              {this.state.selectedDiet.length ? (
+                this.renderDiet()
+              ) : (
+                <View style={cardStyler.dietCard}>
+                  <Text style={cardStyler.dietText}>None</Text>
+                </View>
+              )}
+              <Text></Text>
+              <Button
                 onPress={this.changeDiet}
+                icon={
+                  <Ionicons name="create-outline" color={"white"} size={25} />
+                }
                 title="Edit Diet"
-              >
-                <Text style={{ fontSize: 20 }}>Edit Diet</Text>
-              </Pressable>
-            </View>
+              />
+            </Card>
           </View>
         ) : (
           <View style={formatStyler.card}>
@@ -155,7 +153,6 @@ class ProfileScreen extends React.Component {
               itemTextStyle={{ color: "#222" }}
               itemsContainerStyle={{ maxHeight: 300 }}
               items={diet}
-              defaultIndex={2}
               chip={true}
               resetValue={false}
               textInputProps={{

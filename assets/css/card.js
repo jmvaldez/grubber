@@ -6,13 +6,18 @@ const card = {
   dietCard: {
     backgroundColor: colorStyle.color3,
     padding: 20,
-    borderRadius: 7,
+    borderRadius: 3,
   },
-  dietTitle:{
+  dietTitle: {
     padding: 10,
-    backgroundColor: colorStyle.color3,
     borderRadius: 7,
-    marginBottom: 3
-  }
+    marginBottom: 3,
+    fontSize: 20,
+  },
+  dietText: {
+    fontStyle: "italic",
+    color: "white",
+    textAlign: "center",
+  },
 };
 export default card;
