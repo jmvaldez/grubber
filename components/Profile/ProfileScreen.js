@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { Button, Card, Image } from "react-native-elements";
 
 /* Vendor */
@@ -15,15 +15,11 @@ import cardStyler from "../../assets/css/card.js";
 /* DataSet */
 import diet from "../../health_labels.json";
 
-/* Window */
-// const { height } = Dimensions.get("window");
-
 export class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedDiet: [],
-      screenHeight: 0,
       userDetails: [],
       userDiet: true,
     };
@@ -49,10 +45,6 @@ export class ProfileScreen extends Component {
           this.setState({ selectedDiet: [] });
         }
       });
-  };
-
-  onContentSizeChange = (contentWidth, contentHeight) => {
-    this.setState({ screenHeight: contentHeight });
   };
 
   setDiet = () => {
