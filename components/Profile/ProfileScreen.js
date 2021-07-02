@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState } from "react";
-import { Button, Image, Text, View } from "react-native";
+import { Button, Image, Text, View, Pressable } from "react-native";
 
 /* Vendor */
 import SearchableDropdown from "react-native-searchable-dropdown";
@@ -8,6 +8,9 @@ import firebase from "firebase/app";
 /* Custom CSS */
 import imageStyler from "../../assets/css/image.js";
 import formatStyler from "../../assets/css/format.js";
+import cardStyler from "../../assets/css/card.js";
+import buttonStyler from "../../assets/css/buttons.js";
+import colorStyler from "../../assets/css/colors.js";
 
 /* DataSet */
 import diet from "../../health_labels.json";
@@ -66,9 +69,15 @@ class ProfileScreen extends React.Component {
   };
 
   renderDiet = () => {
-    return this.state.selectedDiet.map((item, index) => (
-      <Text key={index}>{item.name}</Text>
-    ));
+    return (
+      <View style={cardStyler.dietCard}>
+        {this.state.selectedDiet.map((item, index) => (
+          <Text style={{ fontStyle: "italic", color: "white" }} key={index}>
+            {item.name}
+          </Text>
+        ))}
+      </View>
+    );
   };
 
   changeDiet = () => {
@@ -81,20 +90,41 @@ class ProfileScreen extends React.Component {
         {this.state.userDiet ? (
           <View style={formatStyler.center}>
             <Image
-              style={imageStyler.smallImage}
+              style={imageStyler.profileImage}
               source={{
                 uri: this.state.userDetails.photoURL,
               }}
             />
-            <Text>{this.state.userDetails.displayName}</Text>
-            <Text>{this.state.userDetails.email + "\n"}</Text>
-            <Text> Dietary Restrictions {"\n"}</Text>
+            <Text style={{ fontSize: 20 }}>
+              {this.state.userDetails.displayName}
+            </Text>
+            <Text style={{ fontSize: 13 }}>
+              {this.state.userDetails.email + "\n"}
+            </Text>
+            <View style={cardStyler.dietTitle}>
+              <Text style={{ fontSize: 20 }}>Dietary Restrictions</Text>
+            </View>
             {this.state.selectedDiet.length ? (
               this.renderDiet()
             ) : (
-              <Text style={{ fontStyle: "italic" }}>None</Text>
+              <View style={cardStyler.dietCard}>
+                <Text style={{ fontStyle: "italic" }}>None</Text>
+              </View>
             )}
-            <Button onPress={this.changeDiet} title="Edit Diet"></Button>
+            <View>
+              <Pressable
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed ? "#0155AD" : "#43A0F4",
+                  },
+                  buttonStyler.dietButton,
+                ]}
+                onPress={this.changeDiet}
+                title="Edit Diet"
+              >
+                <Text style={{ fontSize: 20 }}>Edit Diet</Text>
+              </Pressable>
+            </View>
           </View>
         ) : (
           <View style={formatStyler.card}>
