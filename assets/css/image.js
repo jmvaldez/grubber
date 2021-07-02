@@ -4,10 +4,10 @@ import colorStyle from "./colors";
 /* currently in progress*/
 const imageStyle = {
   profileImage:{
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 5,
-    marginTop: 50,
+    marginTop: 25,
   }
 };
 export default imageStyle;
