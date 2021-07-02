@@ -1,0 +1,157 @@
+[
+  {
+     "id":1,
+     "name":"alcohol-free",
+     "definition":"No alcohol used or contained"
+  },
+  {
+     "id":2,
+     "name":"immuno-supportive",
+     "definition":"Recipes which fit a science-based approach to eating to strengthen the immune system"
+  },
+  {
+     "id":3,
+     "name":"celery-free",
+     "definition":"Does not contain celery or derivatives"
+  },
+  {
+     "id":4,
+     "name":"crustacean-free",
+     "definition":"Does not contain crustaceans (shrimp, lobster etc.) or derivatives"
+  },
+  {
+     "id":5,
+     "name":"dairy-free",
+     "definition":"No dairy; no lactose"
+  },
+  {
+     "id":6,
+     "name":"egg-free",
+     "definition":"No eggs or products containing eggs"
+  },
+  {
+     "id":7,
+     "name":"fish-free",
+     "definition":"No fish or fish derivatives"
+  },
+  {
+     "id":8,
+     "name":"fodmap-free",
+     "definition":"Does not contain FODMAP foods"
+  },
+  {
+     "id":9,
+     "name":"gluten-free",
+     "definition":"No ingredients containing gluten"
+  },
+  {
+     "id":10,
+     "name":"keto-friendly",
+     "definition":"Maximum 7 grams of net carbs per serving"
+  },
+  {
+     "id":11,
+     "name":"kidney-friendly",
+     "definition":"Per serving – phosphorus less than 250 mg AND potassium less than 500 mg AND sodium less than 500 mg"
+  },
+  {
+     "id":12,
+     "name":"kosher",
+     "definition":"Contains only ingredients allowed by the kosher diet. However it does not guarantee kosher preparation of the ingredients themselves"
+  },
+  {
+     "id":13,
+     "name":"low-potassium",
+     "definition":"Less than 150mg per serving"
+  },
+  {
+     "id":14,
+     "name":"lupine-free",
+     "definition":"Does not contain lupine or derivatives"
+  },
+  {
+     "id":15,
+     "name":"mustard-free",
+     "definition":"Does not contain mustard or derivatives"
+  },
+  {
+     "id":16,
+     "name":"low-fat-abs",
+     "definition":"Less than 3g of fat per serving"
+  },
+  {
+     "id":17,
+     "name":"No-oil-added",
+     "definition":"No oil added except to what is contained in the basic ingredients"
+  },
+  {
+     "id":18,
+     "name":"low-sugar",
+     "definition":"No simple sugars – glucose, dextrose, galactose, fructose, sucrose, lactose, maltose"
+  },
+  {
+     "id":19,
+     "name":"paleo",
+     "definition":"Excludes what are perceived to be agricultural products; grains, legumes, dairy products, potatoes, refined salt, refined sugar, and processed oils"
+  },
+  {
+     "id":20,
+     "name":"peanut-free",
+     "definition":"No peanuts or products containing peanuts"
+  },
+  {
+     "id":21,
+     "name":"pecatarian",
+     "definition":"Does not contain meat or meat based products, can contain dairy and fish"
+  },
+  {
+     "id":22,
+     "name":"pork-free",
+     "definition":"Does not contain pork or derivatives"
+  },
+  {
+     "id":23,
+     "name":"red-meat-free",
+     "definition":"Does not contain beef, lamb, pork, duck, goose, game, horse, and other types of red meat or products containing red meat."
+  },
+  {
+     "id":24,
+     "name":"sesame-free",
+     "definition":"Does not contain sesame seed or derivatives"
+  },
+  {
+     "id":25,
+     "name":"shellfish-free",
+     "definition":"No shellfish or shellfish derivatives"
+  },
+  {
+     "id":26,
+     "name":"soy-free",
+     "definition":"No soy or products containing soy"
+  },
+  {
+     "id":27,
+     "name":"sugar-conscious",
+     "definition":"Less than 4g of sugar per serving"
+  },
+  {
+     "id":28,
+     "name":"tree-nut-free",
+     "definition":"No tree nuts or products containing tree nuts"
+  },
+  {
+     "id":29,
+     "name":"vegan",
+     "definition":"No meat, poultry, fish, dairy, eggs or honey"
+  },
+  {
+     "id":30,
+     "name":"vegetarian",
+     "definition":"No meat, poultry, or fish"
+  },
+  {
+     "id":31,
+     "name":"wheat-free",
+     "definition":"No wheat, can have gluten though"
+  }
+]

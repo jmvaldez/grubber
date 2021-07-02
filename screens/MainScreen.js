@@ -18,9 +18,6 @@ class MainScreen extends Component {
 
     return (
       <>
-        {/* <View style={styles.container}>
-          <Button title="logout" onPress={() => firebase.auth().signOut()} />
-        </View> */}
         <NavigationContainer>
           <AppTab.Navigator
             initialRouteName="Home"
