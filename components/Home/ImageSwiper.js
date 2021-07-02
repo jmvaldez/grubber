@@ -6,7 +6,8 @@ import firebase from "firebase/app";
 import FoodData from "../../data.json";
 
 export default function ImageSwiper() {
-  const [favorites, setFavorites] = useState([]);
+  const [foodData] = useState(FoodData);
+
   var currentUser;
 
   async function addToFavorites(item) {
@@ -25,41 +26,27 @@ export default function ImageSwiper() {
     });
   }
 
-  async function getFavorites() {
-    currentUser = firebase.auth().currentUser;
-
-    var databaseRef = await firebase
-      .database()
-      .ref("/users/" + currentUser.uid)
-      .child("favorites")
-      .get();
-    setFavorites(databaseRef);
-  }
-
-  useEffect(() => {
-    getFavorites();
-  }, []);
-
   return (
     <View style={styles.container}>
       <Swiper
-        cards={FoodData}
+        cards={foodData}
         renderCard={(card) => {
           return (
-            <View style={styles.card}>
+            <View key={card.id} style={styles.card}>
               <Image source={{ uri: card.image }} style={styles.image} />
               <Text style={styles.text}>{card.foodName}</Text>
             </View>
           );
         }}
         infinite={true}
-        onSwipedLeft={(cardIndex) => {
-          console.log("Swiped Left", cardIndex);
-          console.log("FOOD RESULT", FoodData[cardIndex]);
-        }}
         onSwipedRight={(cardIndex) => {
-          console.log("favorites", favorites);
-          addToFavorites(FoodData[cardIndex]);
+          addToFavorites(foodData[cardIndex]);
+
+          let removeFoodItem = () => {
+            foodData.splice(cardIndex, 1);
+          };
+          removeFoodItem();
+          //setTimeout(removeFoodItem, 500);
         }}
         cardIndex={0}
         backgroundColor={"#4FD0E9"}
@@ -80,7 +67,7 @@ const styles = StyleSheet.create({
     bottom: 50,
     borderColor: "#E8E8E8",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "black",
     maxHeight: "90%",
   },
   text: {
@@ -89,9 +76,12 @@ const styles = StyleSheet.create({
     fontSize: 50,
     backgroundColor: "transparent",
     bottom: 20,
+    color: "white",
   },
   image: {
-    height: "100%",
+    resizeMode: "contain",
+    overlayColor: "E8E8E8",
+    height: "90%",
     width: "100%",
     borderRadius: 10,
   },
