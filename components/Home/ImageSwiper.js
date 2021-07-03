@@ -4,6 +4,7 @@ import Swiper from "react-native-deck-swiper";
 import firebase from "firebase/app";
 
 import FoodData from "../../data.json";
+import { set } from "react-native-reanimated";
 
 export default function ImageSwiper() {
   const [favorites, setFavorites] = useState([]);
@@ -18,10 +19,13 @@ export default function ImageSwiper() {
       .ref("/users/" + currentUser.uid)
       .child("favorites")
       .push();
-    databaseRef.set({
-      foodName: item.foodName,
-      description: item.description,
-      image: item.image,
+    item.forEach((a) => {
+      databaseRef.set({
+        foodName: a.foodName,
+        description: a.description,
+        id: a.id,
+        image: a.image,
+      });
     });
   }
 
@@ -31,14 +35,31 @@ export default function ImageSwiper() {
     var databaseRef = await firebase
       .database()
       .ref("/users/" + currentUser.uid)
-      .child("favorites")
-      .get();
-    setFavorites(databaseRef);
+      .once("value")
+      .then((snapshot) => {
+        snapshot.child("favorites").exists();
+        var faves = snapshot.child("favorites").exportVal();
+        setFavorites(JSON.stringify(faves)); //will need to change for performance
+      });
   }
 
   useEffect(() => {
     getFavorites();
   }, []);
+
+  const checkforDupes = (cardIndex) => {
+    var selectedFavId = FoodData[cardIndex].id;
+    selectedFavId = `"id":${selectedFavId}`;
+
+    //checks to see if our keyword is present, if true don't do anything
+    if (favorites.indexOf(selectedFavId) > -1) {
+      console.log("You already have this one");
+    } else {
+      var newFavSet = favorites + selectedFavId;
+      setFavorites(newFavSet); //this adds the new favorites locally if they keep swiping
+      addToFavorites([FoodData[cardIndex]]); //update the database
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -58,8 +79,7 @@ export default function ImageSwiper() {
           console.log("FOOD RESULT", FoodData[cardIndex]);
         }}
         onSwipedRight={(cardIndex) => {
-          console.log("favorites", favorites);
-          addToFavorites(FoodData[cardIndex]);
+          checkforDupes(cardIndex);
         }}
         cardIndex={0}
         backgroundColor={"#4FD0E9"}
