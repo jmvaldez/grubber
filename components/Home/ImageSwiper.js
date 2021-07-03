@@ -4,7 +4,6 @@ import Swiper from "react-native-deck-swiper";
 import firebase from "firebase/app";
 
 import FoodData from "../../data.json";
-import { set } from "react-native-reanimated";
 
 export default function ImageSwiper() {
   const [favorites, setFavorites] = useState([]);
@@ -49,7 +48,7 @@ export default function ImageSwiper() {
 
   const checkforDupes = (cardIndex) => {
     var selectedFavId = FoodData[cardIndex].id;
-    selectedFavId = `"id":${selectedFavId}`;
+    selectedFavId = `"id":${selectedFavId},`;
 
     //checks to see if our keyword is present, if true don't do anything
     if (favorites.indexOf(selectedFavId) > -1) {
