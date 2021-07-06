@@ -53,13 +53,51 @@ export default function ImageSwiper() {
       .ref("/users/" + currentUser.uid)
       .child("favorites")
       .push();
-    databaseRef.set({
-      foodName: item.foodName,
-      description: item.description,
-      image: item.image,
+    item.forEach((a) => {
+      databaseRef.set({
+        foodName: a.foodName,
+        description: a.description,
+        id: a.id,
+        image: a.image,
+      });
     });
   }
 
+<<<<<<< HEAD
+=======
+  async function getFavorites() {
+    currentUser = firebase.auth().currentUser;
+
+    var databaseRef = await firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .once("value")
+      .then((snapshot) => {
+        snapshot.child("favorites").exists();
+        var faves = snapshot.child("favorites").exportVal();
+        setFavorites(JSON.stringify(faves)); //will need to change for performance
+      });
+  }
+
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
+  const checkforDupes = (cardIndex) => {
+    var selectedFavId = FoodData[cardIndex].id;
+    selectedFavId = `"id":${selectedFavId},`;
+
+    //checks to see if our keyword is present, if true don't do anything
+    if (favorites.indexOf(selectedFavId) > -1) {
+      console.log("You already have this one");
+    } else {
+      var newFavSet = favorites + selectedFavId;
+      setFavorites(newFavSet); //this adds the new favorites locally if they keep swiping
+      addToFavorites([FoodData[cardIndex]]); //update the database
+    }
+  };
+
+>>>>>>> main
   return (
     <View style={styles.container}>
       <Swiper
@@ -74,6 +112,7 @@ export default function ImageSwiper() {
         }}
         infinite={true}
         onSwipedRight={(cardIndex) => {
+<<<<<<< HEAD
           addToFavorites(foodData[cardIndex]);
 
           let removeFoodItem = () => {
@@ -81,6 +120,9 @@ export default function ImageSwiper() {
           };
           removeFoodItem();
           //setTimeout(removeFoodItem, 500);
+=======
+          checkforDupes(cardIndex);
+>>>>>>> main
         }}
         cardIndex={0}
         backgroundColor={"#4FD0E9"}

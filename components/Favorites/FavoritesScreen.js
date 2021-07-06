@@ -23,7 +23,7 @@ export default class FavoritesScreen extends React.Component {
    */
 
   componentDidMount() {
-    this.getData();
+    this.getData(); 
   }
 
   getData = () => {

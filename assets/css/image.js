@@ -3,9 +3,11 @@ import colorStyle from "./colors";
 
 /* currently in progress*/
 const imageStyle = {
-  smallImage:{
-    width: 250,
-    height: 200,
+  profileImage:{
+    width: 150,
+    height: 150,
+    borderRadius: 5,
+    marginTop: 25,
   }
 };
 export default imageStyle;

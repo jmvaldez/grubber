@@ -1,18 +1,21 @@
-import React, { Component, Fragment, useState } from "react";
-import { Button, Image, Text, View } from "react-native";
+import React, { Component } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
+import { Button, Card, Image } from "react-native-elements";
 
 /* Vendor */
 import SearchableDropdown from "react-native-searchable-dropdown";
 import firebase from "firebase/app";
+import { Ionicons } from "@expo/vector-icons";
 
 /* Custom CSS */
 import imageStyler from "../../assets/css/image.js";
 import formatStyler from "../../assets/css/format.js";
+import cardStyler from "../../assets/css/card.js";
 
 /* DataSet */
 import diet from "../../health_labels.json";
 
-class ProfileScreen extends React.Component {
+export class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +26,6 @@ class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    //check for user diet in the database
     this.getData();
   }
 
@@ -66,9 +68,15 @@ class ProfileScreen extends React.Component {
   };
 
   renderDiet = () => {
-    return this.state.selectedDiet.map((item, index) => (
-      <Text key={index}>{item.name}</Text>
-    ));
+    return (
+      <View style={cardStyler.dietCard}>
+        {this.state.selectedDiet.map((item, index) => (
+          <Text style={cardStyler.dietText} key={index}>
+            {item.name}
+          </Text>
+        ))}
+      </View>
+    );
   };
 
   changeDiet = () => {
@@ -81,20 +89,40 @@ class ProfileScreen extends React.Component {
         {this.state.userDiet ? (
           <View style={formatStyler.center}>
             <Image
-              style={imageStyler.smallImage}
+              style={imageStyler.profileImage}
               source={{
                 uri: this.state.userDetails.photoURL,
               }}
+              PlaceholderContent={<ActivityIndicator />}
             />
-            <Text>{this.state.userDetails.displayName}</Text>
-            <Text>{this.state.userDetails.email + "\n"}</Text>
-            <Text> Dietary Restrictions {"\n"}</Text>
-            {this.state.selectedDiet.length ? (
-              this.renderDiet()
-            ) : (
-              <Text style={{ fontStyle: "italic" }}>None</Text>
-            )}
-            <Button onPress={this.changeDiet} title="Edit Diet"></Button>
+            <Text style={{ fontSize: 20 }}>
+              {this.state.userDetails.displayName}
+            </Text>
+            <Text style={{ fontSize: 13 }}>
+              {this.state.userDetails.email + "\n"}
+            </Text>
+
+            <Card>
+              <Card.Title style={cardStyler.dietTitle}>
+                Diet Restrictions
+              </Card.Title>
+              <Card.Divider />
+              {this.state.selectedDiet.length ? (
+                this.renderDiet()
+              ) : (
+                <View style={cardStyler.dietCard}>
+                  <Text style={cardStyler.dietText}>None</Text>
+                </View>
+              )}
+              <Text></Text>
+              <Button
+                onPress={this.changeDiet}
+                icon={
+                  <Ionicons name="create-outline" color={"white"} size={25} />
+                }
+                title="Edit Diet"
+              />
+            </Card>
           </View>
         ) : (
           <View style={formatStyler.card}>
@@ -125,7 +153,6 @@ class ProfileScreen extends React.Component {
               itemTextStyle={{ color: "#222" }}
               itemsContainerStyle={{ maxHeight: 300 }}
               items={diet}
-              defaultIndex={2}
               chip={true}
               resetValue={false}
               textInputProps={{
