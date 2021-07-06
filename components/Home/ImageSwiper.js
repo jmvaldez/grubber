@@ -6,8 +6,42 @@ import firebase from "firebase/app";
 import FoodData from "../../data.json";
 
 export default function ImageSwiper() {
-  const [foodData] = useState(FoodData);
+  const [foodData, setFoodData] = useState(FoodData);
+  const [favorites, setFavorites] = useState([]);
 
+  async function getFavorites() {
+    currentUser = firebase.auth().currentUser;
+
+    var databaseRef = await firebase
+      .database()
+      .ref("/users/" + currentUser.uid)
+      .child("favorites")
+      .get();
+    setFavorites(databaseRef);
+  }
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
+  function populateFoodData() {
+    //const keys = Object.entries(favorites);
+    //const secondKeys = Object.values(keys);
+    //Object.values(favorites).forEach((value) => console.log(value));
+    Object.entries(favorites).map((entry) => {
+      Object.entries(entry).map((entry2) => {
+        let key = entry2[0];
+        let value = entry2[1];
+        console.log("KEY", key);
+        console.log("Value", value);
+
+        //console.log("KEY VALUE", key, value);
+        // if (foodData.some((foodItem) => foodItem.id === value)) {
+        //   console.log("Contains favorites");
+        // }
+      });
+    });
+  }
+  populateFoodData();
   var currentUser;
 
   async function addToFavorites(item) {
