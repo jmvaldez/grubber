@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, Pressable, Image } from "react-native";
 import * as Google from "expo-google-app-auth";
 import firebase from "firebase";
+
 class LoginScreen extends Component {
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
@@ -31,7 +32,7 @@ class LoginScreen extends Component {
           // Build Firebase credential with the Google ID token.
           var credential = firebase.auth.GoogleAuthProvider.credential(
             googleUser.idToken,
-            googleUser.accessToken
+            googleUser.accessToken,
           );
           // Sign in with credential from the Google user.
           firebase
@@ -51,7 +52,8 @@ class LoginScreen extends Component {
                     created_at: Date.now(),
                   })
                   .then(function (snapshot) {
-                    // console.log('Snapshot', snapshot);
+                    console.log("Snapshot", snapshot);
+                    //check snapshot and from that info set up the new user in the dynambo database
                   });
               } else {
                 firebase
@@ -75,7 +77,7 @@ class LoginScreen extends Component {
         } else {
           console.log("User already signed-in Firebase.");
         }
-      }.bind(this)
+      }.bind(this),
     );
   };
 
