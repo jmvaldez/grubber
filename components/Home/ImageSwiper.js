@@ -4,36 +4,49 @@ import Swiper from "react-native-deck-swiper";
 import firebase from "firebase/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import FoodData from "../../data.json";
+import { PLACES_API_KEY } from "@env";
 
-export default function ImageSwiper() {
-  const [foodData, setFoodData] = useState(FoodData);
+export default function ImageSwiper(userLocation) {
+  const [foodData, setFoodData] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const coordinates = Object.entries(userLocation);
+  let latitude;
+  let longitude;
 
-  const save = async () => {
-    try {
-      await AsyncStorage.setItem("MyFood", JSON.stringify(foodData));
-    } catch (error) {
-      alert("Err on SAVE", error);
-    }
-  };
+  for (let coord in coordinates) {
+    latitude = coordinates[coord][1].latitude;
+    longitude = coordinates[coord][1].longitude;
+  }
 
-  const load = async () => {
-    try {
-      let data = await AsyncStorage.getItem("MyFood");
-
-      if (data !== null) {
-        setFoodData(JSON.parse(data));
-        console.log(foodData);
-      }
-    } catch (error) {
-      alert("Err on LOAD", error);
-      //clearAll();
-    }
-  };
+  const restaurantsUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=1500&type=restaurant&key=${PLACES_API_KEY}`;
 
   useEffect(() => {
-    load();
+    const fetchRestaurantData = async () => {
+      const response = await fetch(restaurantsUrl);
+      const restaurantData = await response.json();
+      const newData = [];
+
+      for (let restaurants in restaurantData) {
+        for (let restaurant in restaurantData[restaurants]) {
+          const name = restaurantData[restaurants][restaurant].name;
+          const images = restaurantData[restaurants][restaurant].photos;
+
+          if (name !== undefined) {
+            for (const image of images) {
+              const imageUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${image.photo_reference}&key=${PLACES_API_KEY}`;
+
+              let restaurant = {
+                restaurantName: name,
+                imageRequestUrl: imageUrl,
+              };
+              newData.push(restaurant);
+              setFoodData(newData);
+            }
+          }
+        }
+      }
+    };
+    fetchRestaurantData();
   }, []);
 
   async function getFavorites() {
@@ -52,6 +65,8 @@ export default function ImageSwiper() {
 
   var currentUser;
 
+  // !Currently adds to firebase table
+  // TODO: Update Firebase table to accept data from Google Places API or move to favorites table to dynamoDB
   // async function addToFavorites(item) {
   //   // get user
   //   currentUser = firebase.auth().currentUser;
@@ -87,24 +102,11 @@ export default function ImageSwiper() {
     });
   }
 
-  // Clears Async Storage when called
-  // The only method we have as of right now to get back the cards
-  // after they have been swiped right and added to favorites
-  // Use in Load function when you have no more cards.
-  // Will Require you to login again
   /*
    * TODO: When removing a food item from favorites list the item should be: removed
    * 1: Removed from the list
    * 2: Be pushed back to the original Food Data Array
    */
-  const clearAll = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (e) {
-      // clear error
-    }
-    console.log("Done.");
-  };
 
   return (
     <View style={styles.container}>
@@ -114,8 +116,13 @@ export default function ImageSwiper() {
           if (card !== undefined) {
             return (
               <View key={card.id} style={styles.card}>
-                <Image source={{ uri: card.image }} style={styles.image} />
-                <Text style={styles.text}>{card.foodName}</Text>
+                <Image
+                  source={{
+                    uri: card.imageRequestUrl,
+                  }}
+                  style={styles.image}
+                />
+                <Text style={styles.text}>{card.restaurantName}</Text>
               </View>
             );
           }
@@ -128,8 +135,7 @@ export default function ImageSwiper() {
             foodData.splice(cardIndex, 1);
           };
           removeFoodItem();
-          save();
-          //setTimeout(removeFoodItem, 500);
+          //save();
         }}
         cardIndex={0}
         backgroundColor={"#4FD0E9"}
